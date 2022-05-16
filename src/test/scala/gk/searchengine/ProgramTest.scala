@@ -49,11 +49,11 @@ class ProgramTest extends AnyFlatSpec with Matchers {
       "file2" -> Failure(new RuntimeException("Error reading file2")),
       "file3" -> Success(Seq("one two three"))
     ).iterator
-    Runtime.run(processLines(lines))
+    Runtime.run(processLines("fakePath", lines))
     testConsole.linesWritten shouldBe Array(
       "Failed to index file: file1, exception: java.lang.RuntimeException: Error reading file1",
       "Failed to index file: file2, exception: java.lang.RuntimeException: Error reading file2",
-      "Indexed 1 files",
+      "1 files read in directory: fakePath",
       "search> file3: 67%",
       "search> ")
   }

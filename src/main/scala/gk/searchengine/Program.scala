@@ -39,11 +39,11 @@ object Program {
   def processDirectory(dir: File)
                       (implicit console: Console): IO[Unit] = {
     val lines = getFiles(dir).map(getLines)
-    processLines(lines)
+    processLines(dir.getAbsolutePath, lines)
   }
 
 
-  def processLines(lines: Iterator[(String, Try[Seq[String]])])
+  def processLines(directoryPath: String, lines: Iterator[(String, Try[Seq[String]])])
                           (implicit console: Console): IO[Unit] = {
     val (errors, fileIndexInputs) = partitionErrorsAndFileIndexInputs(lines)
     val fileIndexes = fileIndexInputs
@@ -51,7 +51,7 @@ object Program {
       .toSeq
     for {
       _ <- writeFileReadErrors(console, errors)
-      _ <- console.writeln(s"Indexed ${fileIndexes.size} files")
+      _ <- console.writeln(s"${fileIndexes.size} files read in directory: $directoryPath")
       _ <- iterate(Index(fileIndexes))
     } yield ()
   }

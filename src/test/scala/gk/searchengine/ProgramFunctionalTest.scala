@@ -4,6 +4,8 @@ import gk.searchengine.io.{Console, TestConsole}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
+import java.io.File
+
 class ProgramFunctionalTest  extends AnyFlatSpec with Matchers {
   import Program._
 
@@ -21,11 +23,13 @@ class ProgramFunctionalTest  extends AnyFlatSpec with Matchers {
 
   it should "print file processing error message, # of files indexed, ranks" in {
     implicit val testConsole: TestConsole = TestConsole("error bbs")
-    io.Runtime.run(program(Array("testdata")))
+    val directoryName = "testdata"
+    val testdataPath = new File(directoryName).getAbsolutePath
+    io.Runtime.run(program(Array(directoryName)))
     testConsole.linesWritten shouldBe Array(
       "Failed to index file: pdf.txt, exception: java.nio.charset.MalformedInputException: Input length = 1",
       "Failed to index file: pdf2.txt, exception: java.nio.charset.MalformedInputException: Input length = 1",
-      "Indexed 4 files",
+      s"4 files read in directory: $testdataPath",
       "search> ethics.txt: 100%",
       "howtobbs.txt: 50%",
       "search> "
