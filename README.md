@@ -2,7 +2,7 @@ Command line driven text search engine, with usage:
 
 ```
 > sbt
-> runMain SearchMain directoryContainingTextFiles 
+> runMain gk.searchengine.Main directoryContainingTextFiles 
 ```
 
 This reads all the text files in the given directory, gives a command prompt at which interactive searches can be performed. 
